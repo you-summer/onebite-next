@@ -3,23 +3,46 @@ import { ReactNode } from "react";
 import style from "./index.module.css";
 import dummy from "@/mock/dummy.json";
 import MovieItem from "@/components/movie-item";
+import fetchMovies from "@/lib/fetch-movies";
+import { InferGetServerSidePropsType } from "next";
+import fetchRandomMovies from "@/lib/fetch-random-books";
 
-export default function Home() {
+export const getServerSideProps = async () => {
+  // 컴포넌트보다 먼저 실행되어서, 컴포넌트에 필요한 데이터 불러오는 함수
+  // const allMovies = await fetchMovies();
+  // const recoMovies = await fetchRandomMovies();
+  const [allMovies, recoMovies] = await Promise.all([
+    fetchMovies(),
+    fetchRandomMovies(),
+  ]);
+
+  return {
+    props: {
+      allMovies,
+      recoMovies,
+    },
+  };
+};
+
+export default function Home({
+  allMovies,
+  recoMovies,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <div className={style.container}>
       <section>
         <h3>지금 가장 추천하는 영화</h3>
         <div className={style.ran3_container}>
-          {dummy.slice(0, 3).map((dummyM) => {
-            return <MovieItem key={dummyM.id} {...dummyM} />;
+          {recoMovies.map((movie) => {
+            return <MovieItem key={movie.id} {...movie} />;
           })}
         </div>
       </section>
       <section>
         <h3>등록된 모든 영화</h3>
         <div className={style.all_container}>
-          {dummy.map((dummyM) => {
-            return <MovieItem key={dummyM.id} {...dummyM} />;
+          {allMovies.map((movie) => {
+            return <MovieItem key={movie.id} {...movie} />;
           })}
         </div>
       </section>
