@@ -4,10 +4,13 @@ import style from "./index.module.css";
 import dummy from "@/mock/dummy.json";
 import MovieItem from "@/components/movie-item";
 import fetchMovies from "@/lib/fetch-movies";
-import { InferGetServerSidePropsType } from "next";
+import {
+  InferGetServerSidePropsType,
+  InferGetStaticPropsType,
+} from "next";
 import fetchRandomMovies from "@/lib/fetch-random-books";
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
   // 컴포넌트보다 먼저 실행되어서, 컴포넌트에 필요한 데이터 불러오는 함수
   // const allMovies = await fetchMovies();
   // const recoMovies = await fetchRandomMovies();
@@ -27,7 +30,7 @@ export const getServerSideProps = async () => {
 export default function Home({
   allMovies,
   recoMovies,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <div className={style.container}>
       <section>
