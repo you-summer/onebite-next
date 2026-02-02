@@ -1,11 +1,6 @@
 import { useRouter } from "next/router";
 import style from "./[id].module.css";
-import {
-  GetServerSidePropsContext,
-  GetStaticPropsContext,
-  InferGetServerSidePropsType,
-  InferGetStaticPropsType,
-} from "next";
+import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 import fetchOneBook from "@/lib/fetch-one-book";
 import Head from "next/head";
 
