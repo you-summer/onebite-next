@@ -42,7 +42,7 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
 
   if (!book) {
     return {
-      notFount: true,
+      notFound: true,
     };
   }
 
