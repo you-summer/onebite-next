@@ -6,7 +6,7 @@ import { MovieData } from "@/types";
 async function AllMovies() {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie`,
-    { cache: "no-store" },
+    { cache: "force-cache" },
   );
 
   if (!response.ok) {

@@ -1,4 +1,9 @@
+import NotFound from "@/app/not-found";
 import style from "./page.module.css";
+
+export function generateStaticParams() {
+  return [{ id: "1" }, { id: "2" }, { id: "3" }];
+}
 
 export default async function Page({
   params,
@@ -11,6 +16,9 @@ export default async function Page({
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie/${id}`,
   );
   if (!response.ok) {
+    if (response.status === 404) {
+      NotFound();
+    }
     return <div>오류가 발생했습니다....</div>;
   }
 
