@@ -2,8 +2,13 @@ import MovieItem from "@/components/movie-item";
 import style from "./page.module.css";
 import movies from "@/dummy.json";
 import { MovieData } from "@/types";
+import { delay } from "@/util/delay";
+import { Suspense } from "react";
+import RecoItemSkeleton from "@/components/skeleton/reco-item-skeleton";
+import RecoListSkeleton from "@/components/skeleton/reco-list-skeleton";
 
 async function AllMovies() {
+  await delay(1500);
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie`,
     { cache: "force-cache" },
@@ -25,6 +30,7 @@ async function AllMovies() {
 }
 
 async function RecoMovies() {
+  await delay(3000);
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie/random`,
     { next: { revalidate: 3 } },
@@ -50,13 +56,17 @@ export default function Home() {
       <section>
         <h3>지금 가장 추천하는 영화</h3>
         <div className={style.reco_conatiner}>
-          <RecoMovies />
+          <Suspense fallback={<RecoListSkeleton count={3} />}>
+            <RecoMovies />
+          </Suspense>
         </div>
       </section>
       <section>
         <h3>등록된 모든 영화</h3>
         <div className={style.all_container}>
-          <AllMovies />
+          <Suspense fallback={<div>로딩중입니다 ..</div>}>
+            <AllMovies />
+          </Suspense>
         </div>
       </section>
     </div>
