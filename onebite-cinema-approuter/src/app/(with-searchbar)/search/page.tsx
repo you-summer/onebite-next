@@ -2,14 +2,10 @@ import MovieItem from "@/components/movie-item";
 import style from "./page.module.css";
 import { MovieData } from "@/types";
 import { delay } from "@/util/delay";
+import { Suspense } from "react";
+import RecoListSkeleton from "@/components/skeleton/reco-list-skeleton";
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: Promise<{ q?: string }>;
-}) {
-  const { q } = await searchParams;
-
+async function SearchResult({ q }: { q: string }) {
   await delay(1500);
 
   const response = await fetch(
@@ -28,5 +24,19 @@ export default async function Page({
         <MovieItem key={movie.id} {...movie} />
       ))}
     </div>
+  );
+}
+
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}) {
+  const { q } = await searchParams;
+
+  return (
+    <Suspense key={q || ""} fallback={<RecoListSkeleton count={3} />}>
+      <SearchResult q={q || ""} />
+    </Suspense>
   );
 }
