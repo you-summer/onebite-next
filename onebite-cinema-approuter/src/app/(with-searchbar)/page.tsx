@@ -1,10 +1,9 @@
 import MovieItem from "@/components/movie-item";
 import style from "./page.module.css";
-import movies from "@/dummy.json";
+
 import { MovieData } from "@/types";
 import { delay } from "@/util/delay";
 import { Suspense } from "react";
-import RecoItemSkeleton from "@/components/skeleton/reco-item-skeleton";
 import RecoListSkeleton from "@/components/skeleton/reco-list-skeleton";
 
 async function AllMovies() {
